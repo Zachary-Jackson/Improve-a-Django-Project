@@ -3,6 +3,7 @@ from django.forms.extras.widgets import SelectDateWidget
 
 from .models import Menu, Item, Ingredient
 
+
 class MenuForm(forms.ModelForm):
 
     class Meta:

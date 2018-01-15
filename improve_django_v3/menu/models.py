@@ -13,6 +13,7 @@ class Menu(models.Model):
     def __str__(self):
         return self.season
 
+
 class Item(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
@@ -24,6 +25,7 @@ class Item(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=200)
