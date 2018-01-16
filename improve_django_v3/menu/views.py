@@ -15,7 +15,7 @@ def menu_list(request):
         # The menu.expiration_date check is temporary unitl
         # the Menu model is updated.
         if menu.expiration_date:
-            if menu.expiration_date >= timezone.now():
+            if menu.expiration_date <= timezone.now():
                 menus.append(menu)
 
     menus = sorted(menus, key=attrgetter('expiration_date'))
