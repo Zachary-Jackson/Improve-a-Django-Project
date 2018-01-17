@@ -25,6 +25,7 @@ urlpatterns = [
 
 # This is to get the django-debug-toolbar working during development.
 # This may need to be disabled on other user's machines.
+
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [

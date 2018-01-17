@@ -130,6 +130,7 @@ class MenuViewsTests(TestCase):
         self.assertContains(resp, 'Change menu')
         self.assertContains(resp, 'Expiration Date:')
         self.assertContains(resp, self.menu.season)
+        self.assertContains(resp, self.item.name)
 
     def test_menu_detail_view(self):
         '''This tests the menu detail view.'''
@@ -139,7 +140,7 @@ class MenuViewsTests(TestCase):
         self.assertTemplateUsed(resp, 'menu/menu_detail.html')
         self.assertContains(resp, 'On the menu this season')
         self.assertContains(resp, 'Menu expires on')
-        self.assertContains(resp, 'Pumpkin')
+        self.assertContains(resp, self.item.name)
         self.assertContains(resp, self.menu.season)
 
     def test_item_detail_view(self):
@@ -151,6 +152,7 @@ class MenuViewsTests(TestCase):
         self.assertContains(resp, 'Soda Fountain')
         self.assertContains(resp, 'Head Chef:')
         self.assertContains(resp, self.item.name)
+        self.assertContains(resp, self.item.description)
 
     def test_menu_new_view(self):
         '''This tests the new menu item view.'''

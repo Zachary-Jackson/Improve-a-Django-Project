@@ -9,10 +9,10 @@ from .forms import MenuForm
 
 
 def menu_list(request):
-    all_menus = Menu.objects.all()
+    all_menus = Menu.objects.all().prefetch_related('items')
     menus = []
     for menu in all_menus:
-        # The menu.expiration_date check is temporary unitl
+        # The menu.expiration_date check is temporary until
         # the Menu model is updated.
         if menu.expiration_date:
             if menu.expiration_date <= timezone.now():
