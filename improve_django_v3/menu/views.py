@@ -15,7 +15,7 @@ def menu_list(request):
         # The menu.expiration_date check is temporary until
         # the Menu model is updated.
         if menu.expiration_date:
-            if menu.expiration_date <= timezone.now():
+            if menu.expiration_date >= timezone.now():
                 menus.append(menu)
 
     menus = sorted(menus, key=attrgetter('expiration_date'))
@@ -43,6 +43,9 @@ def create_new_menu(request):
             menu = form.save(commit=False)
             menu.created_date = timezone.now()
             menu.save()
+            for item in form.cleaned_data['items']:
+                menu.items.add(item)
+            menu.save()
             return redirect('menu_detail', pk=menu.pk)
     else:
         form = MenuForm()
@@ -56,7 +59,12 @@ def edit_menu(request, pk):
         menu.season = request.POST.get('season', '')
         menu.expiration_date = datetime.strptime(
             request.POST.get('expiration_date', ''), '%m/%d/%Y')
-        menu.items = request.POST.get('items', '')
+        # This gets all of the names of the items the user requested
+        # and gets the item object associated with it. Then it appends
+        # the item to menu.items
+        menu_names = request.POST.get('items', '')
+        for item in menu_names:
+            menu.items.add(Item.objects.get(name=menu_names))
         menu.save()
 
     return render(request, 'menu/change_menu.html', {

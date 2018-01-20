@@ -7,7 +7,7 @@
       <input type="text" name="season" value="{{ menu.season }}">
       <br />
       <label for="items">Items:</label>
-      <select multiple>
+      <select multiple name="items">
       {% for item in items %}
           <option value="{{ item }}">{{ item }}</option>
       {% endfor %}
