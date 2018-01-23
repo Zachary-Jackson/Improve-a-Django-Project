@@ -2,10 +2,19 @@
 
 .glyphicon-plus {
   font-size: 20px;
+  margin-left: 30px;
 }
 
 .page-header {
   margin: auto;
   padding-top: 2em;
   background: linear-gradient(lightgrey, white)
+}
+
+.logo {
+  text-align: center;
+}
+
+.top-menu {
+  text-decoration: underline;
 }

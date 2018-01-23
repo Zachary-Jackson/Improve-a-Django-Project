@@ -114,23 +114,24 @@ class MenuViewsTests(TestCase):
         )
         self.menu.items.add(Item.objects.get(id=1))
 
-    def test_menu_list_view(self):
-        '''This tests the main homepage for menu.'''
-        resp = self.client.get(reverse('menu_list'))
-        self.assertEqual(resp.status_code, 200)
-        self.assertTemplateUsed(resp, 'menu/list_all_current_menus.html')
-        self.assertContains(resp, 'Soda Fountain')
-
-    def test_menu_edit_view(self):
-        '''This tests menu edit view.'''
-        resp = self.client.get(reverse('menu_edit',
+    def test_item_detail_view(self):
+        '''This tests the item detail view.'''
+        resp = self.client.get(reverse('item_detail',
                                        kwargs={'pk': self.menu.pk}))
         self.assertEqual(resp.status_code, 200)
-        self.assertTemplateUsed(resp, 'menu/change_menu.html')
-        self.assertContains(resp, 'Change menu')
-        self.assertContains(resp, 'Expiration Date:')
-        self.assertContains(resp, self.menu.season)
+        self.assertTemplateUsed(resp, 'menu/item_detail.html')
+        self.assertContains(resp, 'Soda Fountain')
+        self.assertContains(resp, 'Head Chef:')
         self.assertContains(resp, self.item.name)
+        self.assertContains(resp, self.item.description)
+
+    def test_item_list_view(self):
+        '''This tests the item list view.'''
+        resp = self.client.get(reverse('item_list'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'menu/item_list.html')
+        self.assertContains(resp, 'Soda Fountain')
+        self.assertContains(resp, 'Pumpkin pie')
 
     def test_menu_detail_view(self):
         '''This tests the menu detail view.'''
@@ -143,20 +144,17 @@ class MenuViewsTests(TestCase):
         self.assertContains(resp, self.item.name)
         self.assertContains(resp, self.menu.season)
 
-    def test_item_detail_view(self):
-        '''This tests the item detail view.'''
-        resp = self.client.get(reverse('item_detail',
-                                       kwargs={'pk': self.menu.pk}))
+    def test_menu_list_view(self):
+        '''This tests the main homepage for menu.'''
+        resp = self.client.get(reverse('menu_list'))
         self.assertEqual(resp.status_code, 200)
-        self.assertTemplateUsed(resp, 'menu/detail_item.html')
+        self.assertTemplateUsed(resp, 'menu/list_all_current_menus.html')
         self.assertContains(resp, 'Soda Fountain')
-        self.assertContains(resp, 'Head Chef:')
-        self.assertContains(resp, self.item.name)
-        self.assertContains(resp, self.item.description)
+        self.assertContains(resp, 'Fall')
 
     def test_menu_new_view(self):
-        '''This tests the new menu item view.'''
+        '''This tests the new menu view.'''
         resp = self.client.get(reverse('menu_new'))
         self.assertEqual(resp.status_code, 200)
-        self.assertTemplateUsed(resp, 'menu/menu_edit.html')
+        self.assertTemplateUsed(resp, 'menu/menu_new.html')
         self.assertContains(resp, 'Soda Fountain')

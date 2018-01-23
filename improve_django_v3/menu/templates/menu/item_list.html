@@ -3,9 +3,9 @@
 {% block content %}
 {% for item in items %}
 	<div>
-		<h1><a href="{% url 'item_detail' pk=item.pk %}">{{ item.title }}</a></h1>
+		<h1><a href="{% url 'item_detail' pk=item.pk %}">{{ item.name }}</a></h1>
 		<p>{{ item.description|linebreaks }}</p>
-		<p>published: {{ item.published_date }}</p>
+		<p>published: {{ item.created_date }}</p>
 	</div>
 {% endfor %}
 {% endblock %}
