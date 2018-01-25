@@ -1,11 +1,9 @@
-from datetime import datetime
+import datetime
 from operator import attrgetter
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.urlresolvers import reverse
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
-from django.utils import timezone
 
 from .models import Item, Menu
 from .forms import MenuForm
@@ -32,9 +30,8 @@ def menu_list(request):
     all_menus = Menu.objects.all().prefetch_related('items')
     menus = []
     for menu in all_menus:
-        if menu.expiration_date:
-            if menu.expiration_date >= timezone.now():
-                menus.append(menu)
+        if menu.expiration_date >= datetime.date.today():
+            menus.append(menu)
 
     menus = sorted(menus, key=attrgetter('expiration_date'))
     return render(request,
@@ -53,7 +50,8 @@ def create_new_menu(request):
         form = MenuForm(request.POST)
         if form.is_valid():
             menu = form.save(commit=False)
-            menu.created_date = timezone.now()
+            menu.created_date = datetime.date.today()
+            menu.expiration_date = form.cleaned_data['expiration_date']
             menu.save()
             for item in form.cleaned_data['items']:
                 menu.items.add(item)
@@ -68,40 +66,12 @@ def edit_menu(request, pk):
     '''This allows a user to edit a Menu object.'''
     instance = get_object_or_404(Menu, pk=pk)
     form = MenuForm(request.POST or None, instance=instance,
+                    initial={'expiration_date': instance.expiration_date}
                     )
-    # form = MenuForm(initial={'season': menu.season,
-    #                          'items': menu.items.all(),
-    #                          'expiration_date': menu.expiration_date})
 
     if request.method == 'POST':
         if form.is_valid():
+            instance.expiration_date = form.cleaned_data['expiration_date']
             form.save()
             return redirect('menu_list')
     return render(request, 'menu/menu_new.html', {'form': form})
-
-
-
-
-
-    # menu = get_object_or_404(Menu, pk=pk)
-    # items = Item.objects.all()
-    # if request.method == "POST":
-    #     menu.season = request.POST.get('season', '')
-    #     menu.expiration_date = datetime.strptime(
-    #         request.POST.get('expiration_date', ''), '%m/%d/%Y')
-    #     # This gets all of the names of the items the user requested
-    #     # and gets the item object associated with it. Then it appends
-    #     # the item to menu.items
-    #     menu_names = request.POST.get('items', '')
-    #     menu.items.clear()
-    #     for item in menu_names:
-    #         menu.items.add(Item.objects.get(name=menu_names))
-    #     menu.save()
-    #
-    #     # This routes the user back to the homepage.
-    #     return HttpResponseRedirect(reverse('menu_list'))
-    #
-    # return render(request, 'menu/menu_change.html', {
-    #     'menu': menu,
-    #     'items': items,
-    #     })
