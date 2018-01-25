@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.utils import timezone
 
@@ -18,8 +20,7 @@ class Item(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     chef = models.ForeignKey('auth.User')
-    created_date = models.DateTimeField(
-            default=timezone.now)
+    created_date = models.DateField(default=datetime.date.today)
     standard = models.BooleanField(default=False)
     ingredients = models.ManyToManyField('Ingredient')
 

@@ -10,14 +10,12 @@
     <body>
         <div class="page-header">
             <h1 class="logo"><a href="/">Soda Fountain</a></h1>
-            {% if user.is_authenticated %}
               <div class="container">
                 <span class="glyphicon glyphicon-plus">
                   <a href="{% url 'menu_new' %}" class="top-menu"> New Menu</a>
                   <a href="{% url 'item_list' %}" class="top-menu"> Item List</a>
                 </div>
                 </span>
-            {% endif %}
         </div>
         <div class="content container">
             <div class="row">

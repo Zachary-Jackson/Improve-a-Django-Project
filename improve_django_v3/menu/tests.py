@@ -95,7 +95,8 @@ class MenuViewsTests(TestCase):
 
         self.item = Item.objects.create(
             name='Pumpkin pie',
-            description='A kind of desert pumpkin, cinnamon, nutmed and more',
+            description=('A kind of desert with pumpkin, cinnamon, nutmeg' +
+                         ' more'),
             chef=self.user,
             # created_date is left blank for default time
             standard=True,

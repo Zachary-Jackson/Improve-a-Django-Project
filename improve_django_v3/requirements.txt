@@ -1,5 +1,6 @@
 coverage==3.7.1
 Django==1.9.9
 django-debug-toolbar==1.9.1
+pytz==2017.3
 selenium==2.53.1
 sqlparse==0.2.1
