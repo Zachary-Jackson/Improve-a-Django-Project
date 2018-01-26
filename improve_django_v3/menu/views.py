@@ -59,7 +59,7 @@ def create_new_menu(request):
             return redirect('menu_detail', pk=menu.pk)
     else:
         form = MenuForm()
-    return render(request, 'menu/menu_new.html', {'form': form})
+    return render(request, 'menu/menu_edit.html', {'form': form})
 
 
 def edit_menu(request, pk):
@@ -74,4 +74,4 @@ def edit_menu(request, pk):
             instance.expiration_date = form.cleaned_data['expiration_date']
             form.save()
             return redirect('menu_list')
-    return render(request, 'menu/menu_new.html', {'form': form})
+    return render(request, 'menu/menu_edit.html', {'form': form})

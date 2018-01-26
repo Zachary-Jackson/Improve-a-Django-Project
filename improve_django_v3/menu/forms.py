@@ -26,7 +26,3 @@ class MenuForm(forms.ModelForm):
             'season',
             'items',
         ]
-
-    def clean_items(self):
-        items = self.cleaned_data['items']
-        return items
