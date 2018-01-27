@@ -1,18 +1,29 @@
 /*This is all custom CSS written specifically for this project by me.*/
 
+.centered-h1 {
+  text-decoration: underline;
+  margin-bottom: 40px;
+}
+
+.delete {
+  font-size: 20px;
+  margin: 50px;
+  color: red;
+}
+
 .glyphicon-plus {
   font-size: 20px;
   margin-left: 30px;
+}
+
+.logo {
+  text-align: center;
 }
 
 .page-header {
   margin: auto;
   padding-top: 2em;
   background: linear-gradient(lightgrey, white)
-}
-
-.logo {
-  text-align: center;
 }
 
 .top-menu {

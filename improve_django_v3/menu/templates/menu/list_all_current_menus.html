@@ -2,6 +2,7 @@
 
 {% block content %}
   <div class="post">
+
       {% if menu.expiration_date %}
           <div class="date">
               Expires on: {{ menu.expiration_date }}
@@ -15,5 +16,6 @@
           </h1>
           <p>{{ menu.items.all|join:", "}}</p>
       {% endfor %}
+      
   </div>
 {% endblock %}

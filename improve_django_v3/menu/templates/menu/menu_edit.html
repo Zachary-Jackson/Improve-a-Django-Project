@@ -5,4 +5,10 @@
   <form method="POST" class="menu-form">{% csrf_token %}
       {{ form.as_p }}
       <button type="submit" class="save btn btn-default">Save</button>
+  </form>
+
+      {% if pk %}
+        <p> <a href="{% url 'menu_delete' pk=pk %}">Delete Menu Object</a></p>
+      {% endif %}
+      
 {% endblock %}

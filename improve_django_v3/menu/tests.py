@@ -2,6 +2,7 @@ import datetime
 
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.forms import ValidationError
 from django.test import TestCase, Client
 
 from .forms import MenuForm
@@ -52,6 +53,27 @@ class FormTests(TestCase):
         }
         form = MenuForm(data=form_data)
         self.assertTrue(form.is_valid())
+
+    def test_clean_hidden_field_menu_form(self):
+        '''This tests the clean_hidden_field for validity.'''
+        form_data = {
+            'season': 'Spring',
+            'items': [self.item.pk],
+            'expiration_date': datetime.date.today(),
+            'hidden_field': 'I am a bot. Rawr!!'
+        }
+        form = MenuForm(data=form_data)
+        self.assertFalse(form.is_valid())
+
+    def test_clean_season_menu_form(self):
+        '''This tests the clean_season field for validity.'''
+        form_data = {
+            'season': 'This h@s punctu@tion.!@#$',
+            'items': [self.item.pk],
+            'expiration_date': datetime.date.today(),
+        }
+        form = MenuForm(data=form_data)
+        self.assertFalse(form.is_valid())
 
 
 class IngredientModelTests(TestCase):
@@ -217,6 +239,25 @@ class MenuViewsTests(TestCase):
         resp = self.client.get(reverse('menu_edit',
                                        kwargs={'pk': 1204}))
         self.assertEqual(resp.status_code, 404)
+
+    def test_menu_delete_view(self):
+        '''This tests the delete menu view.'''
+        resp = self.client.get(reverse('menu_delete',
+                               kwargs={'pk': self.menu.pk}))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, 'Do you want to delete this item?')
+        self.assertContains(resp, self.menu.season)
+        self.assertContains(resp, self.item)
+
+    def test_menu_delete_view_confirmation(self):
+        '''This test is the Menu item is actually deleted from the database.'''
+        c = Client()
+        resp = c.post(reverse('menu_delete',
+                              kwargs={'pk': self.menu.pk}))
+        # This 'POST' request should have deleted the Menu object.
+        self.assertEqual(len(Menu.objects.all()), 0)
+        self.assertRedirects(
+            resp, reverse('menu_list'))
 
     def test_menu_detail_view(self):
         '''This tests the menu detail view.'''

@@ -74,4 +74,16 @@ def edit_menu(request, pk):
             instance.expiration_date = form.cleaned_data['expiration_date']
             form.save()
             return redirect('menu_list')
-    return render(request, 'menu/menu_edit.html', {'form': form})
+    return render(
+        request, 'menu/menu_edit.html', {'form': form, 'pk': int(instance.pk)})
+
+
+def delete_menu(request, pk):
+    '''This allows a user to delete a Menu object.'''
+    menu = get_object_or_404(Menu, pk=pk)
+    if request.method == 'POST':
+        menu.delete()
+        return redirect('menu_list')
+    return render(
+        request, 'menu/menu_delete.html', {'menu': menu}
+    )

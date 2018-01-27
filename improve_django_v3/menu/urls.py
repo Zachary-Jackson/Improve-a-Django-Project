@@ -6,6 +6,7 @@ urlpatterns = [
     url(r'^item/', views.item_list, name='item_list'),
     url(r'^menu/(?P<pk>\d+)/edit/$', views.edit_menu, name='menu_edit'),
     url(r'^menu/(?P<pk>\d+)/$', views.menu_detail, name='menu_detail'),
+    url(r'^menu/delete/(?P<pk>\d+)/$', views.delete_menu, name='menu_delete'),
     url(r'^menu/item/(?P<pk>\d+)/$', views.item_detail, name='item_detail'),
     url(r'^menu/new/$', views.create_new_menu, name='menu_new'),
 ]

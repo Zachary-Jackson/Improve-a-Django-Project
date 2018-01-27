@@ -2,8 +2,8 @@
 
 {% block content %}
   <div class="post">
+    <h1 class="centered-h1">Do you want to delete this item?</h1>
       <h1>
-              <a class="btn btn-default" href="{% url 'menu_edit' pk=menu.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
           {{ menu.season }}
       </h1>
       <h2>On the menu this season:</h2>
@@ -12,6 +12,7 @@
           {% for item in menu.items.all %}
               <li><a href="{% url 'item_detail' pk=item.pk %}">{{ item }}</a></li>
           {% endfor %}
+
       </ul>
 
       {% if menu.expiration_date %}
@@ -20,5 +21,7 @@
           </div>
       {% endif %}
       
+    <form method="POST"> {%csrf_token %}
+      <input type="submit" value="Yes delete this item." class="delete">
   </div>
 {% endblock %}
